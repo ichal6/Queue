@@ -4,11 +4,11 @@ public class Queue {
     public class Node {
         private String value;
         private Node nextNode;
-        private int priority;
+        private int priority; // the smaller priority, the better
 
         public Node(String value){
             this.value = value;
-            this.priority = 0;
+            this.priority = 1;
         }
 
         public Node(String value, int priority){
@@ -94,22 +94,29 @@ public class Queue {
             return;
         }
 
-        Node beforeNode = tail;
         Node newNode = new Node(value, priority);
+        if(tail.getPriority() <= priority){
+            Node oldTail = tail;
+            tail = newNode;
+            tail.setNextNode(oldTail);
+            return;
+        }
 
+        Node beforeNode = tail;
+        Node nextNode = null;
         while (beforeNode != null){
             if(beforeNode.getNextNode() == null || beforeNode.getNextNode().getPriority() <= priority){
-                Node nextNode = beforeNode.getNextNode();
+                nextNode = beforeNode.getNextNode();
                 beforeNode.setNextNode(newNode);
                 newNode.setNextNode(nextNode);
-                return;
+                break;
             }
             beforeNode = beforeNode.getNextNode();
         }
+        if(nextNode == null){
+            this.head = newNode;
+        }
 
-        Node oldTail = tail;
-        tail = newNode;
-        tail.setNextNode(oldTail);
     }
 
     public int queueSize(){
