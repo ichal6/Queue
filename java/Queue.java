@@ -55,12 +55,15 @@ public class Queue {
     }
 
     public String peek(){
+        if(head == null){
+            throw new NoSuchElementException();
+        }
         return head.getValue();
     }
 
     public String dequeue(){
         if(head == null){
-            return null;
+            throw new NoSuchElementException();
         }
         size--;
         String value = head.getValue();
@@ -107,5 +110,12 @@ public class Queue {
         Node oldTail = tail;
         tail = newNode;
         tail.setNextNode(oldTail);
+    }
+
+    public int queueSize(){
+        return this.size;
+    }
+    public boolean isEmpty(){
+        return this.size <= 0;
     }
 }
